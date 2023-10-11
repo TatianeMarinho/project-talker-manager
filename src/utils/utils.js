@@ -16,7 +16,13 @@ const readFile = async () => {
 
 const newToken = () => crypto.randomBytes(8).toString('hex');
 
+const writeFile = async (talker) => {
+  const insert = JSON.stringify(talker, null, 2);
+  await fs.writeFile(talkerPath, insert);
+};
+
 module.exports = {
   readFile,
   newToken,
+  writeFile,
 };
