@@ -1,6 +1,12 @@
 const router = require('express').Router();
 
-const { readFile } = require('../utils/utils');
+const { readFile, writeFile } = require('../utils/utils');
+
+const {
+  validateToken, validateName,
+  validateAge, validateTalk,
+  validateWatchedAt, validateRate,
+} = require('../middlewares/validatesNewPerson');
 
 router.get('/', async (_req, res) => {
   try {
@@ -27,5 +33,19 @@ router.get('/:id', async (req, res) => {
     res.status(500).json({ message: err.sqlMessage });
   }
 });
+
+router.post('/',
+  validateToken, validateName,
+  validateAge, validateTalk,
+  validateWatchedAt, validateRate,
+  async (req, res) => {
+    const personsTalker = await readFile();
+
+    const newPerson = { id: personsTalker.length + 1, ...req.body };
+
+    await writeFile(personsTalker, newPerson);
+
+    res.status(201).json(newPerson);
+  }); 
 
 module.exports = router;

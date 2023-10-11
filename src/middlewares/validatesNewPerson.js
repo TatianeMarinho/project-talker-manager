@@ -41,7 +41,7 @@ const validateAge = (req, res, next) => {
     });
   }
 
-  if (Number.isNaN(age) || age < 18) {
+  if (typeof age !== 'number' || !Number.isInteger(age) || age < 18) {
     return res.status(400).json({
       message: 'O campo "age" deve ser um número inteiro igual ou maior que 18',
     });
@@ -52,7 +52,7 @@ const validateAge = (req, res, next) => {
 const validateTalk = (req, res, next) => {
   const { talk } = req.body;
 
-  if (!talk || 'watchedAt' in talk || 'rate' in talk) {
+  if (!talk) {
     return res.status(400).json({
       message: 'O campo "talk" é obrigatório',
     });
@@ -62,9 +62,9 @@ const validateTalk = (req, res, next) => {
 
 const validateWatchedAt = (req, res, next) => {
   const { watchedAt } = req.body.talk;
-  const dateRegex = /^\d{2}\/\d{2}\/\d{4}$/;
+  const dateRegex = /^(0[1-9]|[1-2][0-9]|3[0-1])\/(0[1-9]|1[0-2])\/\d{4}$/;
 
-  if (!watchedAt) {
+  if (watchedAt === undefined) {
     return res.status(400).json({
       message: 'O campo "watchedAt" é obrigatório',
     });
@@ -81,13 +81,13 @@ const validateWatchedAt = (req, res, next) => {
 const validateRate = (req, res, _next) => {
   const { rate } = req.body.talk;
 
-  if (!rate) {
+  if (rate === undefined) {
     return res.status(400).json({
       message: 'O campo "rate" é obrigatório',
     });
   }
 
-  if (Number.isNaN(rate) >= 1 && Number.isNaN(rate) <= 5) {
+  if (!Number.isInteger(rate) || rate < 1 || rate > 5) {
     return res.status(400).json({
       message: 'O campo "rate" deve ser um número inteiro entre 1 e 5',
     });
