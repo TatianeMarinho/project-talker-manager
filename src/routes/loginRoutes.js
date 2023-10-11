@@ -1,17 +1,14 @@
 const router = require('express').Router();
 
+const { validateEmail, validadePassword } = require('../middlewares/validateLogin');
 const { newToken } = require('../utils/utils');
 
-router.post('/', (req, res) => {
+router.post('/', validateEmail, validadePassword, (_req, res) => {
   try {
-    const { email, password } = req.body;
-    if (email && password) {
-      const token = newToken();
-      return res.status(200).json({ token });
-    } 
-    return res.status(400).json({ message: 'email e password são obrigatórios' });
+    const token = newToken();
+    return res.status(200).json({ token });
   } catch (err) {
-    res.status(500).json({ message: err.sqlMessage });
+    return res.status(500).json({ message: err.sqlMessage });
   }
 });
 
