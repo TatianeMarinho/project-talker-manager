@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { readFile } = require('../db/talkerDB');
+const { readFile } = require('../utils/utils');
 
 router.get('/', async (_req, res) => {
   try {
