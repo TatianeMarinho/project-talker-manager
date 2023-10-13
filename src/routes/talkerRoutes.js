@@ -17,6 +17,23 @@ router.get('/', async (_req, res) => {
   }
 });
 
+router.get('/search/', validateToken, async (req, res) => {
+  try {
+    const searchTerm = req.query.q; 
+    const personsTalker = await readFile();
+
+    if (searchTerm) {
+      const filtered = personsTalker.filter((person) => person.name.toLowerCase()
+        .includes(searchTerm.toLowerCase()));
+
+      return res.status(200).json(filtered);
+    } 
+    return res.status(200).json(personsTalker);
+  } catch (err) {
+    res.status(500).json({ message: err.sqlMessage });
+  }
+});
+
 router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
@@ -90,6 +107,6 @@ router.delete('/:id', validateToken, async (req, res) => {
   } catch (err) {
     res.status(500).json({ message: err.sqlMessage });
   }
-}); 
+});  
 
 module.exports = router;
