@@ -28,15 +28,15 @@ const newToken = () => {
 const newFile = async (talker) => {
   try {
     const personsTalker = await readFile();
-    personsTalker.push(talker);
-    await fs.writeFile('../talker.json', JSON.stringify(personsTalker));
+    const allPersons = [...personsTalker, talker];
+    await fs.writeFile(talkerPath, JSON.stringify(allPersons, null, 2));
   } catch (err) {
     return err.message;
   }
 };
 
 const findId = (array, id) => {
-  const result = array.find((element) => element.id === Number(id));
+  const result = array.findIndex((element) => element.id === Number(id));
 
   return result;
 };

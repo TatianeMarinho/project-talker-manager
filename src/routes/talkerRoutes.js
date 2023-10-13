@@ -21,7 +21,8 @@ router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const talker = await readFile();
-    const result = findId(talker, id);
+    const result = talker.find((element) => element.id === Number(id));
+
     if (result) {
       return res.status(200).json(result);
     } 
@@ -63,14 +64,13 @@ router.put('/:id', validateToken, validateName, validateAge,
       const { name, age, talk } = req.body;
       const talker = await readFile();
       const result = findId(talker, id);
-      if (!result) {
+      if (result < 0) {
         return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
       } 
-      result.name = name;
-      result.age = age;
-      result.talk = talk;
-      await newFile(result);
-      return res.status(201).json(result);
+      talker[result] = { id: Number(id), name, age, talk };
+
+      await newFile(talker);
+      return res.status(200).json(talker[result]);
     } catch (err) {
       console.log(err);
       res.status(500).json({ message: err.sqlMessage });
