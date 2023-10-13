@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { readFile, writeFile } = require('../utils/utils');
+const { readFile, newFile, findId } = require('../utils/utils');
 
 const {
   validateToken, validateName,
@@ -21,7 +21,7 @@ router.get('/:id', async (req, res) => {
   try {
     const { id } = req.params;
     const talker = await readFile();
-    const result = talker.find((element) => element.id === Number(id));
+    const result = findId(talker, id);
     if (result) {
       return res.status(200).json(result);
     } 
@@ -39,13 +39,42 @@ router.post('/',
   validateAge, validateTalk,
   validateWatchedAt, validateRate,
   async (req, res) => {
-    const personsTalker = await readFile();
+    try {
+      const personsTalker = await readFile();
 
-    const newPerson = { id: personsTalker.length + 1, ...req.body };
+      const newId = personsTalker[personsTalker.length - 1].id + 1;
 
-    await writeFile(personsTalker, newPerson);
+      const newPerson = { id: newId, ...req.body };
 
-    res.status(201).json(newPerson);
+      await newFile(newPerson);
+
+      return res.status(201).json(newPerson);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: err.sqlMessage });
+    }
   }); 
+
+router.put('/:id', validateToken, validateName, validateAge,
+  validateTalk, validateWatchedAt, validateRate,
+  async (req, res) => {
+    try {
+      const { id } = req.params;
+      const { name, age, talk } = req.body;
+      const talker = await readFile();
+      const result = findId(talker, id);
+      if (!result) {
+        return res.status(404).json({ message: 'Pessoa palestrante não encontrada' });
+      } 
+      result.name = name;
+      result.age = age;
+      result.talk = talk;
+      await newFile(result);
+      return res.status(201).json(result);
+    } catch (err) {
+      console.log(err);
+      res.status(500).json({ message: err.sqlMessage });
+    }
+  });
 
 module.exports = router;

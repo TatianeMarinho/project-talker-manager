@@ -78,7 +78,7 @@ const validateWatchedAt = (req, res, next) => {
   next();
 };
 
-const validateRate = (req, res, _next) => {
+const validateRate = (req, res, next) => {
   const { rate } = req.body.talk;
 
   if (rate === undefined) {
@@ -92,6 +92,7 @@ const validateRate = (req, res, _next) => {
       message: 'O campo "rate" deve ser um número inteiro entre 1 e 5',
     });
   }
+  next();
 };
 
 module.exports = {
