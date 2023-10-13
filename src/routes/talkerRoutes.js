@@ -77,4 +77,19 @@ router.put('/:id', validateToken, validateName, validateAge,
     }
   });
 
+router.delete('/:id', validateToken, async (req, res) => {
+  try {
+    const { id } = req.params;
+    const personsTalker = await readFile();
+
+    const filteredPersons = personsTalker.filter((person) => person.id !== Number(id));
+
+    await newFile(filteredPersons);
+    
+    return res.status(204).json(null);
+  } catch (err) {
+    res.status(500).json({ message: err.sqlMessage });
+  }
+}); 
+
 module.exports = router;

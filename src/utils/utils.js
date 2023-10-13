@@ -29,6 +29,7 @@ const newFile = async (talker) => {
   try {
     const personsTalker = await readFile();
     const allPersons = [...personsTalker, talker];
+
     await fs.writeFile(talkerPath, JSON.stringify(allPersons, null, 2));
   } catch (err) {
     return err.message;
