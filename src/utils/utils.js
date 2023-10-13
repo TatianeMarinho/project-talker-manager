@@ -42,9 +42,18 @@ const findId = (array, id) => {
   return result;
 };
 
+const deleteFile = async (talker) => {
+  try {
+    await fs.writeFile(talkerPath, JSON.stringify(talker, null, 2));
+  } catch (err) {
+    return err.message;
+  }
+};
+
 module.exports = {
   readFile,
   newToken,
   newFile,
   findId,
+  deleteFile,
 };

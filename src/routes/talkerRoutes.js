@@ -1,6 +1,6 @@
 const router = require('express').Router();
 
-const { readFile, newFile, findId } = require('../utils/utils');
+const { readFile, newFile, findId, deleteFile } = require('../utils/utils');
 
 const {
   validateToken, validateName,
@@ -83,10 +83,10 @@ router.delete('/:id', validateToken, async (req, res) => {
     const personsTalker = await readFile();
 
     const filteredPersons = personsTalker.filter((person) => person.id !== Number(id));
-
-    await newFile(filteredPersons);
+    console.log(filteredPersons);
+    await deleteFile(filteredPersons);
     
-    return res.status(204).json(null);
+    return res.status(204).send();
   } catch (err) {
     res.status(500).json({ message: err.sqlMessage });
   }
