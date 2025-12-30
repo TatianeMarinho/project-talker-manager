@@ -1,10 +1,25 @@
-# :construction: README em construção ! :construction:
-<!-- Olá, Tryber!
-Esse é apenas um arquivo inicial para o README do seu projeto.
-É essencial que você preencha esse documento por conta própria, ok?
-Não deixe de usar nossas dicas de escrita de README de projetos, e deixe sua criatividade brilhar!
-:warning: IMPORTANTE: você precisa deixar nítido:
-- quais arquivos/pastas foram desenvolvidos por você; 
-- quais arquivos/pastas foram desenvolvidos por outra pessoa estudante;
-- quais arquivos/pastas foram desenvolvidos pela Trybe.
--->
+🗣️ Talker Manager
+
+Uma API de gerenciamento de palestrantes construída com Node.js e o framework Express. A aplicação permite realizar operações completas de CRUD (Create, Read, Update e Delete) em um arquivo JSON, além de implementar rotas de login com geração de tokens para autenticação.
+
+🚀 Funcionalidades
+
+CRUD de Palestrantes: Listar, buscar, cadastrar, editar e excluir palestrantes.
+
+Filtros de Busca: Pesquisa por nome, taxa de satisfação e data de palestra através de query strings.
+
+Autenticação: Rota de login que gera um token aleatório de 16 caracteres.
+
+Validações de Segurança: Middlewares personalizados para validar tokens de autenticação e campos obrigatórios (nome, idade, data, etc.).
+
+Persistência em Arquivo: Manipulação do sistema de arquivos (fs) para leitura e escrita de dados.
+
+🧰 Tecnologias utilizadas
+
+Node.js: Ambiente de execução.
+
+Express: Framework para gerenciamento de rotas e middlewares.
+
+FS (File System): Módulo nativo para persistência de dados em arquivos JSON.
+
+Crypto: Módulo nativo para geração de tokens.
